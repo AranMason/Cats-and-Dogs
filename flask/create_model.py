@@ -8,7 +8,7 @@ from keras.optimizers import Adam
 from keras.metrics import categorical_crossentropy
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers.normalization import BatchNormalization
-from keras.layers.convolutional import *
+# from keras.layers.convolutional import *
 # from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix
 import itertools
@@ -16,6 +16,8 @@ import itertools
 # %matplotlib inline
 
 file_classes = ['dogs', 'cats']
+
+epochs = 20
 
 train_path = 'data/train'
 valid_path = 'data/valid'
@@ -46,6 +48,6 @@ model.summary()
 model.compile(Adam(lr=0.0001), loss='categorical_crossentropy', metrics=['accuracy'])
 
 model.fit_generator(train_batches, steps_per_epoch=4,
-					validation_data=valid_batches, validation_steps=4, epochs=10, verbose=2)
+					validation_data=valid_batches, validation_steps=4, epochs=epochs, verbose=2)
 
 model.save_weights('model.h5')
