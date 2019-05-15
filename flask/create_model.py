@@ -50,4 +50,4 @@ model.compile(Adam(lr=0.0001), loss='categorical_crossentropy', metrics=['accura
 model.fit_generator(train_batches, steps_per_epoch=4,
 					validation_data=valid_batches, validation_steps=4, epochs=epochs, verbose=2)
 
-model.save_weights('model.h5')
+model.save('model.h5')
