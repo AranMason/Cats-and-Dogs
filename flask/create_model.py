@@ -23,7 +23,7 @@ test_path = 'data/test'
 
 train_batches = ImageDataGenerator().flow_from_directory(train_path, target_size=(224,224), classes=file_classes, batch_size=10)
 valid_batches = ImageDataGenerator().flow_from_directory(valid_path, target_size=(224, 224), classes=file_classes, batch_size=4)
-test_batches = ImageDataGenerator().flow_from_directory(test_path, target_size=(224, 224), classes=file_classes, batch_size=8)
+# test_batches = ImageDataGenerator().flow_from_directory(test_path, target_size=(224, 224), classes=file_classes, batch_size=8)
 
 vgg16_model = keras.applications.vgg16.VGG16(include_top=False)
 

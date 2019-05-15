@@ -16,7 +16,7 @@ from flask import request
 from flask import jsonify
 from flask import Flask
 
-model_file = 'VGG16_cats_dogs_horses.h5'
+model_file = 'model.h5'
 
 app = Flask(__name__)
 
