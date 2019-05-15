@@ -25,14 +25,19 @@ train_batches = ImageDataGenerator().flow_from_directory(train_path, target_size
 valid_batches = ImageDataGenerator().flow_from_directory(valid_path, target_size=(224, 224), classes=file_classes, batch_size=4)
 # test_batches = ImageDataGenerator().flow_from_directory(test_path, target_size=(224, 224), classes=file_classes, batch_size=8)
 
-vgg16_model = keras.applications.vgg16.VGG16(include_top=False)
+imgs, labels = next(train_batches)
+
+vgg16_model = keras.applications.vgg16.VGG16()
 
 
 #Convert to a Sequential Model Type
 model = Sequential()
-for layer in vgg16_model.layers:
-	layer.trainable = False
-	model.add(layer)
+for layer in vgg16_model.layers[:-1]:
+    model.add(layer)
+
+for layer in model.layers:
+    layer.trainable = False
+
 
 model.add(Dense(len(file_classes), activation='softmax'))
 
