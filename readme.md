@@ -2,6 +2,8 @@
 
 This repo is my playground for experiementing with Keras and learning my way around the library.
 
+NOTE: Keras version 2.1.6 is being used over later version due to issues saving and loading models.
+
 ## Current Learning Goals
 
 ### Flask

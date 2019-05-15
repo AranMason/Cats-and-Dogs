@@ -6,7 +6,7 @@ from keras.layers import Activation
 from keras.layers.core import Dense, Flatten
 from keras.optimizers import Adam
 from keras.metrics import categorical_crossentropy
-from keras.preprocessing.image import ImageDataGenerator
+from keras.preprocessing.image import ImageDataGenerator, load_img, img_to_array
 from keras.layers.normalization import BatchNormalization
 # from keras.layers.convolutional import *
 # from matplotlib import pyplot as plt
@@ -50,4 +50,28 @@ model.compile(Adam(lr=0.0001), loss='categorical_crossentropy', metrics=['accura
 model.fit_generator(train_batches, steps_per_epoch=4,
 					validation_data=valid_batches, validation_steps=4, epochs=epochs, verbose=2)
 
-model.save('model.h5')
+
+json = model.to_json()
+with open('models/model.json', 'w') as json_file:
+	json_file.write(json)
+
+model.save_weights('models/model_weights.h5')
+
+model.save('models/model_complete.h5')
+print("Saved Model")
+
+# def preprocess_image(image, target_size):
+# 	if image.mode != 'RGB':
+# 		image = image.convert('RGB')
+
+# 	image = image.resize(target_size)
+# 	image = img_to_array(image)
+# 	image = np.expand_dims(image, axis=0)
+
+# 	return image
+
+# img = preprocess_image(load_img('./test_img.jpg'), target_size=(224, 224))
+# print("Making Test Prediction")
+# predict = model.predict(img)
+
+# print(predict)
