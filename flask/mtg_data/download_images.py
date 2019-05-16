@@ -1,6 +1,7 @@
 import urllib.request as urllib
 import json
 import os
+import time
 
 with open('scryfall-default-cards.json', encoding='utf-8') as json_file:
 	data = json.load(json_file)
@@ -9,6 +10,8 @@ with open('scryfall-default-cards.json', encoding='utf-8') as json_file:
 	# print(data[2]['color_identity'])
 
 	for card in data:
+
+		time.sleep(0.1) # Add a small delay to respect Scryfalls rate limiting requests.
 
 		color_id = card['color_identity']
 
