@@ -14,6 +14,7 @@
 		<p style="font-weight:bold"> Predictions</p>
 		<p>Dog: <span id="dog-prediction"></span></p>
 		<p>Cat: <span id="cat-prediction"></span></p>
+		<p>Horse: <span id="horse-prediction"></span></p>
 
 		<img id="selected-image" src=""/>
 
@@ -31,6 +32,7 @@
 				reader.readAsDataURL($("#image-selector")[0].files[0])
 				$("#dog-prediction").text("");
 				$("#cat-prediction").text("");
+				$("#horse-prediction").text(res.prediction.horse);
 			})
 
 			$("#predict-button").click((event) => {
@@ -39,9 +41,14 @@
 				}
 				//console.log(message)
 
+				function toPercent(str){
+					return (parseFloat(str)*100).toFixed(2) + "%"
+				}
+
 				$.post("http://localhost:5000/predict", JSON.stringify(message), (res) => {
-					$("#dog-prediction").text(res.prediction.dog);
-					$("#cat-prediction").text(res.prediction.cat);
+					$("#dog-prediction").text(toPercent(res.dogs));
+					$("#cat-prediction").text(toPercent(res.cats));
+					$("#horse-prediction").text(toPercent(res.horses));
 					console.log(res)
 				})
 

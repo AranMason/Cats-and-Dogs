@@ -6,6 +6,7 @@ import base64
 import numpy as np
 import io
 from PIL import Image
+import json
 
 import keras
 from keras import backend as K
@@ -14,19 +15,26 @@ from keras.models import load_model, model_from_json
 from keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img
 from keras.optimizers import Adam
 
+import tensorflow as tf
+
 from flask import request
 from flask import jsonify
 from flask import Flask
 
 K.clear_session()
-import tensorflow as tf
-
 
 graph = tf.get_default_graph()
 
 model_file = 'models/model_complete.h5'
 
 app = Flask(__name__)
+
+def get_classes():
+	global classes
+	with open('models/classes.json', 'r') as f:
+		classes = json.load(f)
+	print(" * Loaded Model Classes")
+	print(" * Found: ", classes)
 
 def get_model():
 	print(" * Loading Keras Model...")
@@ -47,7 +55,8 @@ def get_model():
 	global model
 	model = load_model(model_file)
 	# model._make_predict_function()
-	type(model)
+
+	print(model.predict_classes)
 	print(' * Model Loaded!')
 	model.summary()
 
@@ -64,6 +73,7 @@ def preprocess_image(image, target_size):
 print("Using Keras Version: ", keras.__version__)
 
 get_model()
+get_classes()
 
 @app.route('/predict', methods=["POST"])
 def predict():
@@ -91,11 +101,11 @@ def predict():
 		print(prediction)
 
 		response = {
-			'prediction': {
-				'dog': str(prediction[0][0]),
-				'cat': str(prediction[0][1])
-			}
+
 		}
+
+		for key in classes.keys():
+			response[key] = str(prediction[0][classes[key]])
 
 		return jsonify(response)
 
@@ -105,7 +115,7 @@ def test():
 	with graph.as_default():
 
 		print("Running Test Route")
-		img = load_img('test_img.jpg', target_size=(224, 224))
+		img = load_img('data/60772895_2139110652808772_1139490257108992000_n.jpg', target_size=(224, 224))
 
 		img = img_to_array(img)
 
@@ -115,4 +125,4 @@ def test():
 
 		print(predict)
 
-		return 'Test'
+		return predict
