@@ -51,10 +51,10 @@ with open('scryfall-all-cards.json', encoding='utf-8') as json_file:
 			if card_color is not 'multi':
 
 				# Randomly assign the card as test or training data
-				rng = random.randint(0, 5)
+				# rng = random.randint(0, 5)
 				test = 'test'
-				if rng > 4:
-					test = 'validate'
+				# if rng > 4:
+				# 	test = 'validate'
 
 				# for color_id in card_color_id:
 
