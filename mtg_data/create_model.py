@@ -28,8 +28,6 @@ print("Classes: ", train_batches.class_indices)
 
 file_classes = train_batches.class_indices
 
-imgs, labels = next(train_batches)
-
 vgg16_model = keras.applications.vgg16.VGG16()
 
 
@@ -49,7 +47,10 @@ model.summary()
 model.compile(Adam(lr=0.0001), loss='categorical_crossentropy', metrics=['accuracy'])
 
 model.fit_generator(train_batches, steps_per_epoch=4,
-					validation_data=valid_batches, validation_steps=4, epochs=epochs, verbose=2)
+					validation_data=valid_batches,
+					validation_steps=4,
+					epochs=epochs,
+					verbose=2)
 
 
 json_model = model.to_json()
