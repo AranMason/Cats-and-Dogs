@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+	</head>
+
+	<body>
+
+		<input id="image-selector" type="file">
+
+		<button id="predict-button"> Predict</button>
+
+		<p style="font-weight:bold"> Predictions</p>
+		<div id="predictions">
+			<p>Dog: <span id="dog-prediction"></span></p>
+			<p>Cat: <span id="cat-prediction"></span></p>
+			<p>Horse: <span id="horse-prediction"></span></p>
+		</div>
+
+
+		<img id="selected-image" style="max-width:500px" src=""/>
+
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script>
+			let base64Image;
+			$("#image-selector").change(() => {
+				let reader = new FileReader();
+				reader.onload = (e) => {
+					let dataURL = reader.result
+					$("#selected-image").attr("src", dataURL);
+					base64Image = dataURL.split(",")[1]
+					console.log(base64Image);
+				}
+				reader.readAsDataURL($("#image-selector")[0].files[0])
+				$("#dog-prediction").text("");
+				$("#cat-prediction").text("");
+				$("#horse-prediction").text("");
+			})
+
+			$("#predict-button").click((event) => {
+				let message = {
+					image: base64Image
+				}
+				//console.log(message)
+
+				function toPercent(str){
+					return (parseFloat(str)*100).toFixed(2) + "%"
+				}
+
+				$.post("http://localhost:5000/predict", JSON.stringify(message), (res) => {
+
+					var pred = $("#predictions")
+					pred.empty()
+
+					Object.keys(res).forEach(item => {
+						pred.append(`<p>${item}: \t${toPercent(res[item])}</p>`)
+					})
+
+					console.log(res)
+				})
+
+			})
+		</script>
+	</body>
+
+</html>
