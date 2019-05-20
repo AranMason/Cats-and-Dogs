@@ -60,12 +60,6 @@ model.fit_generator(train_batches,
 					shuffle=True,
 					verbose=2)
 
-# model.fit( train_batches,
-# 			validation_split=0.2,
-# 			shuffle=True,
-# 			verbose=2
-# 			)
-
 
 json_model = model.to_json()
 with open('models/model.json', 'w') as json_file:
