@@ -14,15 +14,22 @@ import itertools
 
 
 
-epochs = 30
+epochs = 50
 
 train_path = 'mtg/test'
-valid_path = 'mtg/validate'
+# valid_path = 'mtg/validate'
 # test_path = 'data/test'
 
-train_batches = ImageDataGenerator().flow_from_directory(train_path, target_size=(224,224),  batch_size=10)
-valid_batches = ImageDataGenerator().flow_from_directory(valid_path, target_size=(224, 224),  batch_size=10) #classes=file_classes,
-# test_batches = ImageDataGenerator().flow_from_directory(test_path, target_size=(224, 224), classes=file_classes, batch_size=8)
+IDG = ImageDataGenerator(validation_split=0.2)
+
+train_batches = IDG.flow_from_directory(train_path,
+										target_size=(224,224),
+										batch_size=10)
+
+valid_batches = IDG.flow_from_directory(train_path,
+										target_size=(224, 224),
+										batch_size=10,
+										subset='validation')
 
 print("Classes: ", train_batches.class_indices)
 
@@ -46,11 +53,18 @@ model.summary()
 
 model.compile(Adam(lr=0.0001), loss='categorical_crossentropy', metrics=['accuracy'])
 
-model.fit_generator(train_batches, steps_per_epoch=4,
+model.fit_generator(train_batches,
+					# steps_per_epoch=4,
 					validation_data=valid_batches,
-					validation_steps=4,
 					epochs=epochs,
+					shuffle=True,
 					verbose=2)
+
+# model.fit( train_batches,
+# 			validation_split=0.2,
+# 			shuffle=True,
+# 			verbose=2
+# 			)
 
 
 json_model = model.to_json()
